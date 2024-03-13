@@ -155,3 +155,21 @@ Response:
   "threadId": "thread_abc123"
 }
 ```
+
+---
+
+Get feedback from a user
+
+GET `/users/{user_id}/feedback/{feedback_id}`
+
+Response:
+
+```json
+{
+  "userId": "8270a112-05bf-424b-9024-3ab8d097fad1",
+  "feedbackId": "8270a112-05bf-424b-9024-3ab8d097fad1",
+  "createdAt": 29519288,
+  "content": "Some detailed feedback to the user.",
+  "score": 9
+}
+```
