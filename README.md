@@ -33,9 +33,10 @@ IntelliViews is a platform designed to assist users in improving their interview
 5. Register and start improving your interview skills with AI mentorship!
 
 ## Contributors
-- [Benjamin Austestad]([link-to-your-profile](https://github.com/Sabbasn))
+- [Benjamin Austestad](https://github.com/Sabbasn)
+- [Kanthee kosolyuthasarn](https://github.com/KantheeK)
 
 ## License
 - OPEN AI
 ## Contact
-For any inquiries, reach out to [benjamin.austestad@no.experis.com].
+For any inquiries, reach out to benjamin.austestad@no.experis.com or kanthee.kosolyuthasarn@no.experis.com
