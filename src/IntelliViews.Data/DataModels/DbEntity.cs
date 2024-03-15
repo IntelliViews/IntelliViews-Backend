@@ -1,4 +1,4 @@
-﻿namespace IntelliViews.Data
+﻿namespace IntelliViews.Data.DataModels
 {
     public abstract class DbEntity
     {
