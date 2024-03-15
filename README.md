@@ -9,7 +9,7 @@ IntelliViews is a platform designed to assist users in improving their interview
 - **Mock Interview Session:** Users can initiate mock interview sessions where they are questioned by the AI.
 - **Admin Feedback:** Admins can rate user performance on a scale from 1-10 and provide feedback for improvement.
 - **Profile Page:** Users can view their scores and feedback on their profile page.
-- **Progress Tracking:** Users can track their performance and progress over time.
+- **Progress Tracking:** Users can track their performance and progress over time (Check this).
 - **Chat History:** Users can access previous chat conversations with the AI.
 - **Responsive Design:** The platform ensures a seamless experience across various devices - PC, tablet, and phone.
 
@@ -32,11 +32,14 @@ IntelliViews is a platform designed to assist users in improving their interview
 4. Run the application.
 5. Register and start improving your interview skills with AI mentorship!
 
+[The Open API spec](./assets/IntelliViews-spec.md)
+
 ## Contributors
 - [Benjamin Austestad](https://github.com/Sabbasn)
 - [Kanthee kosolyuthasarn](https://github.com/KantheeK)
+- [Andreas Lauvhjell](https://github.com/Hjaldrgud)
 
 ## License
 - OPEN AI
 ## Contact
-For any inquiries, reach out to benjamin.austestad@no.experis.com or kanthee.kosolyuthasarn@no.experis.com
+For any inquiries, reach out to benjamin.austestad@no.experis.com, kanthee.kosolyuthasarn@no.experis.com or andreas.lauvhjell@no.experis.com
