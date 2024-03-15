@@ -1,15 +1,14 @@
-﻿using IntelliViews.Data.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IntelliViews.Data.DataModels
 {
-    public class ApplicationUser : IEntity
+    public interface IEntity
     {
         public string Id { get; }
-        public required Roles Role { get; set; }
     }
 }

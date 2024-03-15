@@ -1,6 +1,8 @@
-﻿namespace IntelliViews.API.Automapper
+﻿using AutoMapper;
+
+namespace IntelliViews.API.Automapper
 {
-    public class MappingProfile
+    public class MappingProfile : Profile
     {
     }
 }

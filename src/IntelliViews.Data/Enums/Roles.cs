@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace IntelliViews.Data.Enums
 {
-    internal class Roles
+    public enum Roles
     {
+        Admin,
+        User
     }
 }

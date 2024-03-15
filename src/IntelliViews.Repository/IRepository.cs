@@ -1,4 +1,4 @@
-﻿using IntelliViews.Data.DataModels;
+﻿using IntelliViews.Data;
 
 namespace IntelliViews.Repository
 {
