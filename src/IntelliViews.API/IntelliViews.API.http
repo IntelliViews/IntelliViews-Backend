@@ -1,0 +1,6 @@
+@IntelliViews.API_HostAddress = http://localhost:5244
+
+GET {{IntelliViews.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
