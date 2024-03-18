@@ -29,9 +29,18 @@ namespace IntelliViews.Data
 
             //AUTO INCLUDE: (so you dont have to include when calling --> context.Authors.FirstOrDefault(a => a.Id == authorId); )
             // Instead of context.Authors .Include(a => a.Books) // Explicitly include related books.FirstOrDefault(a => a.Id == authorId);
-            /*builder.Entity<ThreadUser>()
+            builder.Entity<ThreadUser>()
                 .Navigation(t => t.User)
-                .AutoInclude();*/
+                .AutoInclude();
+
+            builder.Entity<ThreadUser>()
+                .Navigation(t => t.Feedbacks)
+                .AutoInclude();
+
+            builder.Entity<ApplicationUser>()
+                .Navigation(t => t.Feedbacks)
+                .AutoInclude();
+
 
             base.OnModelCreating(builder);
             builder.Entity<ThreadUser>()

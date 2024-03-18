@@ -1,5 +1,6 @@
 ﻿
 using IntelliViews.Data;
+using IntelliViews.Data.DataModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelliViews.Repository
@@ -51,5 +52,8 @@ namespace IntelliViews.Repository
             await _dbContext.SaveChangesAsync();
             return entity;
         }
+
+
+       
     }
 }

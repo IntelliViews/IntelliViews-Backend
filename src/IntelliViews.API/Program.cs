@@ -33,7 +33,8 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 
 // Add Database repo:
-//builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+builder.Services.AddScoped<IRepository<ThreadUser>, GenericRepository<ThreadUser>>();
+builder.Services.AddScoped<IRepository<Feedback>, GenericRepository<Feedback>>();
 builder.Services.AddScoped<AuthenticationRepository>();
 
 
