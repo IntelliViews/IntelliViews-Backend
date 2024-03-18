@@ -48,4 +48,8 @@
     <ProjectReference Include="..\IntelliViews.Infrastructure\IntelliViews.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Threads\" />
+  </ItemGroup>
+
 </Project>

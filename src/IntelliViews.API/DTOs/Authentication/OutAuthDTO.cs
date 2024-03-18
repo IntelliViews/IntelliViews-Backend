@@ -1,4 +1,4 @@
-﻿namespace IntelliViews.API.DTOs
+﻿namespace IntelliViews.API.DTOs.Authentication
 {
     public class OutAuthDTO
     {

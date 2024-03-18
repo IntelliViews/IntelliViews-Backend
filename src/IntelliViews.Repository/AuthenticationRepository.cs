@@ -32,24 +32,15 @@ namespace IntelliViews.Repository
             }
             else
             {
-                //user.Password = "";
+                user.Password = "";
                 await _db.SaveChangesAsync();
                 return user;
             }
-
         }
 
         public async Task LoginUser()
         {
-            /*var userInDb = _db.Users.FirstOrDefault(u => u.Email == user.Email);
-
-            if (userInDb is null)
-            {
-                return Unauthorized();
-            }*/
-
             await _db.SaveChangesAsync();
-            
         }
     }
 }
