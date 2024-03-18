@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using IntelliViews.API.DTOs;
+using IntelliViews.API.DTOs.Authentication;
+using IntelliViews.API.DTOs.User;
 using IntelliViews.Data.DataModels;
 
 
@@ -14,6 +15,9 @@ namespace IntelliViews.API.Automapper
             CreateMap<ApplicationUser, OutRegisterDTO>();
             CreateMap<InAuthDTO, ApplicationUser>();
            
+            CreateMap<InUserDTO, ApplicationUser>();
+            CreateMap<ApplicationUser, OutUserDTO>();
+            
 
         }
     }

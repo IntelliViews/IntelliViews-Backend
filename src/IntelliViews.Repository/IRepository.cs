@@ -20,7 +20,7 @@ namespace IntelliViews.Repository
         /// </summary>
         /// <param name="entity">The entity it will be updated to</param>
         /// <returns>The updated entity</returns>
-        Task<T> Update(T entity);
+        Task<T> Update(T entity, string id);
         /// <summary>
         /// Deletes an entity by its id
         /// </summary>

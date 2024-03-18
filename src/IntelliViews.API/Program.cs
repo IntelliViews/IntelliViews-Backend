@@ -72,11 +72,6 @@ builder.Services.AddSwaggerGen(option =>
 // Support string to enum conversions
 builder.Services.AddControllers();
 
-/*builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});*/
-
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
