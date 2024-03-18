@@ -24,13 +24,13 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateUser(
             [FromBody] InRegisterDTO newUser,
-            [FromServices] AuthenticationRepository<ApplicationUser> repository,
+            [FromServices] AuthenticationRepository repository,
             [FromServices] IMapper mapper,
             [FromServices] UserManager<ApplicationUser> userManager
             )
         {
 
-            ServiceResponse<string> response = new();
+            ServiceResponse<OutRegisterDTO> response = new();
             try
             {
                 ApplicationUser? dbUser = await userManager.FindByEmailAsync(newUser.Email);
@@ -45,12 +45,66 @@ namespace IntelliViews.API.Endpoints
                 {
                     ApplicationUser user = mapper.Map<ApplicationUser>(newUser);
                     // Source:
-                    var source = await repository.CreateUser(user, userManager);
+                    ApplicationUser source = await repository.CreateUser(user, userManager);
                     // Transferring:
                     response.Data = mapper.Map<OutRegisterDTO>(source);
                     response.Message = "User created successfully!";
-                    return TypedResults.Created(nameof(user), response);    //THIS WORK!
+                    return TypedResults.Created(nameof(user), response);    //THIS WORK
 
+                }
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+           
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        private static async Task<IResult> LoginUser(
+            [FromBody] InAuthDTO inUser,
+            [FromServices] AuthenticationRepository repository,
+            [FromServices] IMapper mapper,
+            [FromServices] UserManager<ApplicationUser> userManager,
+            [FromServices] TokenService tokenService
+            )
+        {
+            ServiceResponse<OutAuthDTO> response = new();
+            try
+            {
+                ApplicationUser? dbUser = await userManager.FindByEmailAsync(inUser.Email);
+                if (dbUser == null)
+                {
+                    response.Status = false;
+                    response.Message = "User with email not found";
+                    return TypedResults.BadRequest(response);
+                }
+
+                bool isPasswordValid = await userManager.CheckPasswordAsync(dbUser, inUser.Password!);
+
+                if (!isPasswordValid)
+                {
+                    response.Status = false;
+                    response.Message = "Wrong password!";
+                    return TypedResults.BadRequest(response);
+                }
+
+                else
+                {
+                    //ApplicationUser user = mapper.Map<ApplicationUser>(inUser);
+                    string token = tokenService.CreateToken(dbUser);
+                   
+                    await repository.LoginUser();
+                    // Transferring:
+                    response.Data = new OutAuthDTO
+                    {
+                        Username = dbUser.UserName,
+                        Email = dbUser.Email,
+                        Token = token
+                    };
+                    response.Message = "User created successfully!";
+                    return TypedResults.Ok(response);   
 
                 }
             }
@@ -59,16 +113,6 @@ namespace IntelliViews.API.Endpoints
                 return TypedResults.BadRequest(ex.Message);
             }
 
- 
-
-        }
-           
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        private static async Task<IResult> LoginUser(LoginUserDTO lDTO, IRepository repository)
-        {
-           
         }
     }
 }

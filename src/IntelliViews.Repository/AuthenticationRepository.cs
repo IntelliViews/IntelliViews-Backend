@@ -13,13 +13,11 @@ namespace IntelliViews.Repository
 {
     public class AuthenticationRepository
     {
-        private readonly DataContext _context;
+        
         private DataContext _db;
-        private DbSet<ApplicationUser> _dbSet = null;
         public AuthenticationRepository(DataContext db)
         {
             _db = db;
-
         }
 
         public async Task<ApplicationUser> CreateUser(ApplicationUser user, UserManager<ApplicationUser> _userManager)
@@ -39,6 +37,19 @@ namespace IntelliViews.Repository
                 return user;
             }
 
+        }
+
+        public async Task LoginUser()
+        {
+            /*var userInDb = _db.Users.FirstOrDefault(u => u.Email == user.Email);
+
+            if (userInDb is null)
+            {
+                return Unauthorized();
+            }*/
+
+            await _db.SaveChangesAsync();
+            
         }
     }
 }

@@ -11,8 +11,10 @@ namespace IntelliViews.API.Automapper
 
             // Mapping profile for the ApplicationUser:
             CreateMap<InRegisterDTO, ApplicationUser>();
-            CreateMap<OutRegisterDTO, ApplicationUser>();
-            
+            CreateMap<ApplicationUser, OutRegisterDTO>();
+            CreateMap<InAuthDTO, ApplicationUser>();
+           
+
         }
     }
 }
