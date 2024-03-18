@@ -15,7 +15,7 @@ namespace IntelliViews.API.DTOs
         [Required]
         public string? Password { get; set; }
         [Required]
-        public Roles Role { get; set; } = Roles.User;
+        public Roles Role { get; set; } 
 
     }
 }

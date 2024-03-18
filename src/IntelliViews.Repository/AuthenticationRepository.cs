@@ -32,7 +32,7 @@ namespace IntelliViews.Repository
             }
             else
             {
-                user.Password = "";
+                //user.Password = "";
                 await _db.SaveChangesAsync();
                 return user;
             }

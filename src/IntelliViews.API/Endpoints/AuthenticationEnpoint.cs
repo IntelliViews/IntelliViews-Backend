@@ -46,6 +46,10 @@ namespace IntelliViews.API.Endpoints
                     ApplicationUser user = mapper.Map<ApplicationUser>(newUser);
                     // Source:
                     ApplicationUser source = await repository.CreateUser(user, userManager);
+                    /*var source = await userManager.CreateAsync(
+                    new ApplicationUser { UserName = newUser.UserName, Email = newUser.Email, Role = newUser.Role },
+                    newUser.Password!    
+                );*/
                     // Transferring:
                     response.Data = mapper.Map<OutRegisterDTO>(source);
                     response.Message = "User created successfully!";

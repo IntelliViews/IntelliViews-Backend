@@ -16,7 +16,8 @@ namespace IntelliViews.Data.DataModels
         [Required]
         [Column("role")]   
         public Roles Role { get; set; }
-        [Column("created_at")]
+
+        [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt {  get; set; } = DateTime.Now;
 
         public string? Password { get; set; }
