@@ -1,5 +1,5 @@
-﻿using IntelliViews.Data;
-using IntelliViews.Data.DataModels;
+﻿using IntelliViews.Data.DataModels;
+using IntelliViews.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,39 +7,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace IntelliViews.Repository
 {
-    public class AuthenticationRepository<T> : IRepository<T> where T : class, DbEntity
+    public class AuthenticationRepository
     {
-        private readonly UserManager<T> _userManager;
         private readonly DataContext _context;
-       
-
-      
-        public Task<T> Create(T entity)
+        private DataContext _db;
+        private DbSet<ApplicationUser> _dbSet = null;
+        public AuthenticationRepository(DataContext db)
         {
-            throw new NotImplementedException();
+            _db = db;
+
         }
 
-        public Task<T> DeleteById(string id)
+        public async Task<ApplicationUser> CreateUser(ApplicationUser user, UserManager<ApplicationUser> _userManager)
         {
-            throw new NotImplementedException();
-        }
+            var result = await _userManager.CreateAsync(
+                   user, user.Password!
+             );
 
-        public Task<List<T>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+            if (result.Errors.Any())
+            {
+                throw new Exception(result.ToString());
+            }
+            else
+            {
+                user.Password = "";
+                await _db.SaveChangesAsync();
+                return user;
+            }
 
-        public Task<T> GetById(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> Update(T entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }
