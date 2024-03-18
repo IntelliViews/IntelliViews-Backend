@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IntelliViews.Data\IntelliViews.Data.csproj" />
+	
   </ItemGroup>
 
 </Project>

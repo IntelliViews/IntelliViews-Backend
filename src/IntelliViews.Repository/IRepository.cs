@@ -2,7 +2,7 @@
 
 namespace IntelliViews.Repository
 {
-    public interface IRepository<T> where T : DbEntity
+    public interface IRepository<T> where T : class, DbEntity
     {
         /// <summary>
         /// Gets an entity by its id

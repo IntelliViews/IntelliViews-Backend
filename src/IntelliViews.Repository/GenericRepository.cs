@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IntelliViews.Repository
 {
-    public class GenericRepository<T> : IRepository<T> where T : DbEntity
+    public class GenericRepository<T> : IRepository<T> where T : class, DbEntity
     {
         private readonly DataContext _dbContext;
+        private DbSet<T> _dbSet = null;
         public GenericRepository(DataContext dbContext)
         {
             _dbContext = dbContext;
