@@ -17,7 +17,7 @@ namespace IntelliViews.Data.DataModels
         // For many to one:
         [ForeignKey("user_id")]
         [Column("user_id")]
-        public int UsereId { get; set; }
+        public string UsereId { get; set; }
         public ApplicationUser User { get; set; }
 
         // Navigation property for feedbacks associated with this thread

@@ -97,6 +97,57 @@ namespace IntelliViews.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("IntelliViews.Data.DataModels.Feedback", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("ThreadId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("thread_id");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ThreadId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("feedbacks");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("UsereId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsereId");
+
+                    b.ToTable("threads");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -163,6 +214,36 @@ namespace IntelliViews.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("IntelliViews.Data.DataModels.Feedback", b =>
+                {
+                    b.HasOne("IntelliViews.Data.DataModels.ThreadUser", "Thread")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Thread");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", "User")
+                        .WithMany("Threads")
+                        .HasForeignKey("UsereId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", null)
@@ -188,6 +269,18 @@ namespace IntelliViews.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ApplicationUser", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Threads");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.Navigation("Feedbacks");
                 });
 #pragma warning restore 612, 618
         }

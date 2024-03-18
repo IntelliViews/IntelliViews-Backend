@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IntelliViews.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class SecondMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,6 +101,51 @@ namespace IntelliViews.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "threads",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "Date", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_threads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_threads_AspNetUsers_user_id",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "Date", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    thread_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_feedbacks_AspNetUsers_user_id",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_feedbacks_threads_thread_id",
+                        column: x => x.thread_id,
+                        principalTable: "threads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
@@ -121,6 +166,21 @@ namespace IntelliViews.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbacks_thread_id",
+                table: "feedbacks",
+                column: "thread_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbacks_user_id",
+                table: "feedbacks",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_threads_user_id",
+                table: "threads",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -134,6 +194,12 @@ namespace IntelliViews.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "threads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
