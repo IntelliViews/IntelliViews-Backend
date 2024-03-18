@@ -143,6 +143,7 @@ app.UseAuthorization();
 
 //Endpoints:
 app.AuthenticationConfiguration();
+app.ThreadsConfiguration();
 
 app.Run();
 
