@@ -11,14 +11,10 @@ namespace IntelliViews.Data
 {
     public class DataContext : IdentityUserContext<ApplicationUser>
     {
-        //In case of docker:
-        //public static bool _migrations;
+       
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            /*if (!_migrations) { 
-                this.Database.Migrate();
-                _migrations = true;
-            }*/
+           
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -69,8 +65,9 @@ namespace IntelliViews.Data
                //*/
 
 
-            // Testing with seed:
-            builder.Entity<ThreadUser>().HasData(
+
+            // Testing with seed: //TODO: Need to change the UserId..
+          /*  builder.Entity<ThreadUser>().HasData(
                 new ThreadUser() { Id = "1", CreatedAt = DateTime.Now, UserId = "0f058217-784c-4483-ad7d-9d4e01a81933" },
                 new ThreadUser() { Id = "2", CreatedAt = DateTime.Now, UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a" },
                 new ThreadUser() { Id = "3", CreatedAt = DateTime.Now, UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a" }
@@ -80,7 +77,7 @@ namespace IntelliViews.Data
                new Feedback() { Id = "1111", Context = "TestFeedback1", CreatedAt = DateTime.Now, ThreadId = "1", UserId = "0f058217-784c-4483-ad7d-9d4e01a81933", Score = 1 },
                new Feedback() { Id = "2222", Context = "TestFeedback2", CreatedAt = DateTime.Now, ThreadId = "2", UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a", Score = 10 },
                new Feedback() { Id = "3333", Context = "TestFeedback3", CreatedAt = DateTime.Now, ThreadId = "3", UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a", Score = 9 }
-               );
+               );*/
 
         }
 

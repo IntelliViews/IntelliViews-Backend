@@ -6,6 +6,7 @@ using IntelliViews.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Json.Serialization;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +29,25 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddProblemDetails();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+
+/*// For switching between two production and development connection.
+string connectionString = "DevelopmentConnection";
+IWebHostEnvironment env;
+#if HTTP
+#endif
+// For production environment, use the production connection string
+if (!app.Environment.IsDevelopment())
+{
+    connectionString = "ProductionConnection";
+}*/
+
+
 builder.Services.AddDbContext<DataContext>(opt =>
 {
     //opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("ProductionConnection"));
+    //opt.UseNpgsql(builder.Configuration.GetConnectionString(connectionString));
 });
 
 // Add Database repo:
