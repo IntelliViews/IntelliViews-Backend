@@ -3,21 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliViews.API", "IntelliViews.API\IntelliViews.API.csproj", "{7A529F19-66B1-47CA-90A3-4A753F62E539}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelliViews.API", "IntelliViews.API\IntelliViews.API.csproj", "{7A529F19-66B1-47CA-90A3-4A753F62E539}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliViews.Data", "IntelliViews.Data\IntelliViews.Data.csproj", "{05F54B81-246B-49C9-8FEF-53188D263FF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelliViews.Data", "IntelliViews.Data\IntelliViews.Data.csproj", "{05F54B81-246B-49C9-8FEF-53188D263FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliViews.Infrastructure", "IntelliViews.Infrastructure\IntelliViews.Infrastructure.csproj", "{C99B6A46-137B-4521-9E25-CBD5C46E0E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelliViews.Infrastructure", "IntelliViews.Infrastructure\IntelliViews.Infrastructure.csproj", "{C99B6A46-137B-4521-9E25-CBD5C46E0E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliViews.Repository", "IntelliViews.Repository\IntelliViews.Repository.csproj", "{1079E50A-B274-4727-B07F-0DEA4508D81E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelliViews.Repository", "IntelliViews.Repository\IntelliViews.Repository.csproj", "{1079E50A-B274-4727-B07F-0DEA4508D81E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7A529F19-66B1-47CA-90A3-4A753F62E539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +33,8 @@ Global
 		{1079E50A-B274-4727-B07F-0DEA4508D81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1079E50A-B274-4727-B07F-0DEA4508D81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1079E50A-B274-4727-B07F-0DEA4508D81E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
