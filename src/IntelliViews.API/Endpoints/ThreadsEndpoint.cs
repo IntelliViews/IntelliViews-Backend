@@ -21,6 +21,8 @@ namespace IntelliViews.API.Endpoints
             threadsGroup.MapGet("/{user_id}", GetThreads);
             threadsGroup.MapGet("/{user_id}/{thread_id}", GetThread);
             threadsGroup.MapGet("/{user_id}/feedback/{thread_id}", GetFeedback);
+
+            
         }
 
 

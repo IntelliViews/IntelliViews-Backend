@@ -13,6 +13,9 @@ namespace IntelliViews.Data.DataModels
 
         [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        [Column("content")]
+        public string Content { get; set; }
+
 
         // For many to one:
         [ForeignKey("user_id")]
@@ -20,7 +23,10 @@ namespace IntelliViews.Data.DataModels
         public string UsereId { get; set; }
         public ApplicationUser User { get; set; }
 
-        // Navigation property for feedbacks associated with this thread
-        public ICollection<Feedback> Feedbacks { get; set; }
+
+        // Navigation property for feedback associated with this thread
+        public Feedback Feedback { get; set; } = null!;
+        
+
     }
 }
