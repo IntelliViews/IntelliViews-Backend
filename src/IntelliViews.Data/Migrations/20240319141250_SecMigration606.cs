@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IntelliViews.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class SecMigration606 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,6 +101,54 @@ namespace IntelliViews.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "threads",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "Date", nullable: false),
+                    content = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_threads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_threads_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "Date", nullable: false),
+                    content = table.Column<string>(type: "text", nullable: true),
+                    score = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ThreadId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_feedbacks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_feedbacks_threads_ThreadId",
+                        column: x => x.ThreadId,
+                        principalTable: "threads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
@@ -121,6 +169,22 @@ namespace IntelliViews.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbacks_ThreadId",
+                table: "feedbacks",
+                column: "ThreadId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbacks_UserId",
+                table: "feedbacks",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_threads_UserId",
+                table: "threads",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -134,6 +198,12 @@ namespace IntelliViews.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "threads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

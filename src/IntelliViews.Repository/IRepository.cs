@@ -33,5 +33,6 @@ namespace IntelliViews.Repository
         /// <param name="entity">The entity to be created</param>
         /// <returns>The created entity</returns>
         Task<T> Create(T entity);
+       
     }
 }

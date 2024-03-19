@@ -21,5 +21,13 @@ namespace IntelliViews.Data.DataModels
         public DateTime CreatedAt {  get; set; } = DateTime.Now;
 
         public string? Password { get; set; }
+
+        // Navigation property for threads owned by this user
+        [Column("threads")]
+        public ICollection<ThreadUser>? Threads { get; set; } = new List<ThreadUser>();
+
+        // Navigation property for feedbacks created by this user
+        [Column("feedbacks")]
+        public ICollection<Feedback>? Feedbacks { get; set; } = new List<Feedback>();
     }
 }

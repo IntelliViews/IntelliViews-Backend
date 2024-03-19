@@ -10,6 +10,6 @@ namespace IntelliViews.API.DTOs.Authentication
 
         public string? UserName { get { return Email; } set { } }
 
-        public Roles Role { get; set; } = Roles.User;
+        public Roles Role { get; set; } 
     }
 }

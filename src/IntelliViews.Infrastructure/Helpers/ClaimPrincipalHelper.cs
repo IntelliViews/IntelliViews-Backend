@@ -1,11 +1,10 @@
 ﻿using System.Security.Claims;
+using System.Security.Principal;
 
 namespace IntelliViews.API.Helpers
 {
     public static class ClaimPrincipalHelper
     {
-       
-
         public static string UserId(this ClaimsPrincipal user)
         {
             IEnumerable<Claim> claims = user.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier);
@@ -20,14 +19,6 @@ namespace IntelliViews.API.Helpers
             return claim?.Value;
         }
 
-        // public static string? UserId(this IIdentity identity)
-        // {
-        //   if (identity != null && identity.IsAuthenticated)
-        //   {
-        //     // return Guid.Parse(((ClaimsIdentity)identity).Claims.Where(x => x.Type == "NameIdentifier").FirstOrDefault()!.Value);
-        //     return ((ClaimsIdentity)identity).Claims.Where(x => x.Type == "NameIdentifier").FirstOrDefault()!.Value;
-        //   }
-        //   return null;
-        // }
+       
     }
 }

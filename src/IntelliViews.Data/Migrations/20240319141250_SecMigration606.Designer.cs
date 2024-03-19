@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IntelliViews.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240318143956_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240319141250_SecMigration606")]
+    partial class SecMigration606
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,67 @@ namespace IntelliViews.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("IntelliViews.Data.DataModels.Feedback", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Context")
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer")
+                        .HasColumnName("score");
+
+                    b.Property<string>("ThreadId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ThreadId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("feedbacks");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Context")
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("threads");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -166,6 +227,36 @@ namespace IntelliViews.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("IntelliViews.Data.DataModels.Feedback", b =>
+                {
+                    b.HasOne("IntelliViews.Data.DataModels.ThreadUser", "Thread")
+                        .WithOne("Feedback")
+                        .HasForeignKey("IntelliViews.Data.DataModels.Feedback", "ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Thread");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", "User")
+                        .WithMany("Threads")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("IntelliViews.Data.DataModels.ApplicationUser", null)
@@ -190,6 +281,19 @@ namespace IntelliViews.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ApplicationUser", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Threads");
+                });
+
+            modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
+                {
+                    b.Navigation("Feedback")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

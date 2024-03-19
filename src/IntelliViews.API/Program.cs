@@ -33,8 +33,12 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 
 // Add Database repo:
-//builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+builder.Services.AddScoped<IRepository<ThreadUser>, GenericRepository<ThreadUser>>();
+builder.Services.AddScoped<IRepository<Feedback>, GenericRepository<Feedback>>();
+builder.Services.AddScoped<IRepository<ApplicationUser>, GenericRepository<ApplicationUser>>();
 builder.Services.AddScoped<AuthenticationRepository>();
+//builder.Services.AddScoped<IRepository<ThreadUser>, ThreadRepository>();
+builder.Services.AddScoped<ThreadRepository>();
 
 
 
@@ -87,11 +91,11 @@ builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
-options.User.RequireUniqueEmail = true;
-options.Password.RequireDigit = false;
-options.Password.RequiredLength = 6;
-options.Password.RequireNonAlphanumeric = false;
-options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
@@ -102,6 +106,7 @@ var validIssuer = builder.Configuration.GetValue<string>("JwtTokenSettings:Valid
 var validAudience = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidAudience");
 var symmetricSecurityKey = builder.Configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
 
+builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -126,6 +131,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -143,6 +150,7 @@ app.UseAuthorization();
 
 //Endpoints:
 app.AuthenticationConfiguration();
+app.ThreadsConfiguration();
 
 app.Run();
 

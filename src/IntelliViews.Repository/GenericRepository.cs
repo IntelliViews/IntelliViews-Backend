@@ -1,5 +1,6 @@
 ﻿
 using IntelliViews.Data;
+using IntelliViews.Data.DataModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelliViews.Repository
@@ -42,6 +43,7 @@ namespace IntelliViews.Repository
             return entity;
         }
 
+        // Have not taken an account for empty or bad request..
         public async Task<T> Update(T entity, string id)
         {
             T source = await GetById(id);
@@ -51,5 +53,8 @@ namespace IntelliViews.Repository
             await _dbContext.SaveChangesAsync();
             return entity;
         }
+
+
+       
     }
 }
