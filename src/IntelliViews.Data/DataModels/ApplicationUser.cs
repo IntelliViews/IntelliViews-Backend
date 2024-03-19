@@ -26,6 +26,6 @@ namespace IntelliViews.Data.DataModels
         public ICollection<ThreadUser>? Threads { get; set; } = new List<ThreadUser>();
 
         // Navigation property for feedbacks created by this user
-        public ICollection<Feedback> Feedbacks { get; set; }
+        public ICollection<Feedback>? Feedbacks { get; set; } = new List<Feedback>();
     }
 }

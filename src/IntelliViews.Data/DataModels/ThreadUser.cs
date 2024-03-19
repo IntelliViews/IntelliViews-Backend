@@ -14,13 +14,13 @@ namespace IntelliViews.Data.DataModels
         [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("content")]
-        public string Content { get; set; }
+        public string? Context { get; set; }
 
 
         // For many to one:
         [ForeignKey("user_id")]
         [Column("user_id")]
-        public string UsereId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
 

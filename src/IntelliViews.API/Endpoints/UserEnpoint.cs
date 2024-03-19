@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using IntelliViews.API.DTOs.Authentication;
+using IntelliViews.API.DTOs.Feedback;
+using IntelliViews.API.DTOs.Threads;
 using IntelliViews.API.DTOs.User;
-using IntelliViews.API.Helpers;
 using IntelliViews.API.Services;
 using IntelliViews.Data.DataModels;
 using IntelliViews.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 using System.Security.Claims;
 
 namespace IntelliViews.API.Endpoints
@@ -21,10 +21,16 @@ namespace IntelliViews.API.Endpoints
             var userGroup = app.MapGroup("users");
             userGroup.MapPost("/register", CreateUser);
             userGroup.MapPost("/login", LoginUser);
+
+            // For Admin:
             userGroup.MapGet("/{id}", Get);
             userGroup.MapGet("/", GetAll);
             userGroup.MapPut("/{id}", UpdateUser);
             userGroup.MapDelete("/{id}", DeleteUser);
+
+            userGroup.MapGet("/{id}/feedback/{feedback_id}", GetFeedback);
+            userGroup.MapGet("/{id}/thread", GetThreads);
+            userGroup.MapGet("/{id}/treadh/{thread_id}", GetThread);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -111,7 +117,7 @@ namespace IntelliViews.API.Endpoints
                         Email = dbUser.Email,
                         Token = token
                     };
-                    response.Message = "User created successfully!";
+                    response.Message = "Successfully logged in!";
                     return TypedResults.Ok(response);
 
                 }
@@ -130,8 +136,7 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> Get(
             [FromQuery] string id,
             [FromServices] IRepository<ApplicationUser> repository,
-            [FromServices] IMapper mapper,
-            [FromServices] ClaimsPrincipal user
+            [FromServices] IMapper mapper
         )
         {
             ServiceResponse<OutUserDTO> response = new();
@@ -142,7 +147,8 @@ namespace IntelliViews.API.Endpoints
                 // Transferring:
                 response.Data = mapper.Map<OutUserDTO>(source);
                 response.Status = true;
-                return TypedResults.Ok(new { DateTime = DateTime.Now, User = user.Email(), response });
+                response.Message = "Sucessful!";
+                return TypedResults.Ok(response); // return TypedResults.Ok(new { DateTime = DateTime.Now, User = user.Email(), response });
             }
             catch (Exception ex)
             {
@@ -158,8 +164,8 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> GetAll(
             [FromServices] IRepository<ApplicationUser> repository,
-            [FromServices] IMapper mapper,
-            [FromServices] ClaimsPrincipal user
+            [FromServices] IMapper mapper
+            //[FromServices] ClaimsPrincipal user
             )
         {
             ServiceResponse<List<OutUserDTO>> response = new();
@@ -170,7 +176,8 @@ namespace IntelliViews.API.Endpoints
             List<OutUserDTO> results = source.Select(mapper.Map<OutUserDTO>).ToList();
             response.Data = results;
             response.Status = true;
-            return TypedResults.Ok(new { DateTime = DateTime.Now, User = user.Email(), response });
+            response.Message = "Ok";
+            return TypedResults.Ok(response);  //return TypedResults.Ok(new { DateTime = DateTime.Now, response });
 
         }
 
@@ -181,7 +188,6 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> UpdateUser(
             [FromServices] IRepository<ApplicationUser> repository,
             [FromServices] IMapper mapper,
-            [FromServices] ClaimsPrincipal user,
             [FromBody] InUserDTO newUser,
             [FromQuery] string id
             )
@@ -196,8 +202,9 @@ namespace IntelliViews.API.Endpoints
                 //Transferring:
                 response.Data = mapper.Map<OutUserDTO>(source);
                 response.Status = true;
+                response.Message = "Sucessful!";
 
-                return response != null ? TypedResults.Ok(new { DateTime = DateTime.Now, User = user.Email(), response }) :
+                return response != null ? TypedResults.Ok(response) :
                     TypedResults.BadRequest($"Couldn't save to the database");
             }
 
@@ -217,7 +224,6 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> DeleteUser(
             [FromServices] IRepository<ApplicationUser> repository,
             [FromServices] IMapper mapper,
-            [FromServices] ClaimsPrincipal user,
             [FromQuery] string id)
         {
 
@@ -230,8 +236,9 @@ namespace IntelliViews.API.Endpoints
                 //Transferring:
                 response.Data = mapper.Map<OutUserDTO>(source);
                 response.Status = true;
+                response.Message = "Sucessful!";
 
-                return response != null ? TypedResults.Ok(new { DateTime = DateTime.Now, User = user.Email(), response }) : 
+                return response != null ? TypedResults.Ok(response) :
                     TypedResults.BadRequest($"Couldn't delete from the database");
             }
 
@@ -242,6 +249,110 @@ namespace IntelliViews.API.Endpoints
                 return TypedResults.NotFound(ex.Message);
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public static async Task<IResult> GetThread(
+        [FromQuery] string id,
+        [FromQuery] string thread_id,
+          [FromServices] ThreadRepository repository,
+          [FromServices] IMapper mapper
+      )
+        {
+            ServiceResponse<OutThreadsDTO> response = new();
+            try
+            {
+                // Source: 
+                ThreadUser source = await repository.FindByUserIdAndThreadId(id, thread_id);
+                // Transferring:
+                response.Data = mapper.Map<OutThreadsDTO>(source);
+                response.Status = true;
+                response.Message = "Sucessful!";
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+        }
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async static Task<IResult> GetThreads
+            (
+                [FromQuery] string id,
+                [FromServices] ThreadRepository repository,
+                [FromServices] IMapper mapper
+            )
+        {
+
+            ServiceResponse<List<OutThreadsDTO>> response = new();
+            try
+            {
+                // Source: 
+                List<ThreadUser> source = await repository.GetById(id);
+                // Transferring:
+                List<OutThreadsDTO> results = source.Select(mapper.Map<OutThreadsDTO>).ToList();
+                response.Data = results;
+                response.Status = true;
+                response.Message = "Sucessful!";
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+        }
+
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async static Task<IResult> GetFeedback
+            (
+                [FromQuery] string id,
+                [FromQuery] string feedback_id,
+                [FromServices] ThreadRepository repository,
+                [FromServices] IMapper mapper
+            )
+        {
+            ServiceResponse<List<OutFeedbackDTO>> response = new();
+            try
+            {
+                // Source: 
+                List<Feedback> source = await repository.FindFeedbacksByIdAndUserId(feedback_id, id);
+                // Transferring:
+                List<OutFeedbackDTO> results = source.Select(mapper.Map<OutFeedbackDTO>).ToList();
+                response.Data = results;
+                response.Status = true;
+                response.Message = "Sucessful!";
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+
+        }
+
+
+
+
 
     }
 }

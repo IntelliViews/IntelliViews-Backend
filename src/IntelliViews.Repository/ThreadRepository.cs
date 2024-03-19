@@ -22,13 +22,13 @@ namespace IntelliViews.Repository
 
         public async Task<ThreadUser> FindByUserIdAndThreadId(string userId, string threadId)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.UsereId == userId && x.Id == threadId);
+            return await _dbSet.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == threadId);
         }
 
-        public async Task<List<Feedback>> FindFeedbacksByThreadIdAndUserId(string threadId, string userId)
+        public async Task<List<Feedback>> FindFeedbacksByIdAndUserId(string feedbackId, string userId)
         {
             return await _dbContext.Feedbacks
-                .Where(f => f.ThreadId == threadId && f.UserId == userId)
+                .Where(f => f.Id == feedbackId && f.UserId == userId)
                 .ToListAsync();
         }
 
@@ -50,10 +50,10 @@ namespace IntelliViews.Repository
             bool userExists = await _dbContext.Threads.AnyAsync(t => t.Id == userId);
             if (!userExists)
             {
-                throw new Exception($"User with ID '{userId}' does not exist.");
+                throw new Exception($"User with ID '{userId}' does not exist or no thread existed!");
             }
             else { return await _dbContext.Threads
-            .Where(t => t.UsereId == userId)
+            .Where(t => t.UserId == userId)
             .ToListAsync();
             }
         }

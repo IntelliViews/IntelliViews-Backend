@@ -20,6 +20,8 @@ namespace IntelliViews.Data.DataModels
 
         [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        [Column("content")]
+        public string? Context { get; set; }
 
         // Foreign key to relate feedback to user via thread
         [ForeignKey("thread.user_id")]

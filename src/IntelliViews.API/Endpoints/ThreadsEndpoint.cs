@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IntelliViews.API.DTOs.Feedback;
 using IntelliViews.API.DTOs.Threads;
 using IntelliViews.API.DTOs.User;
 using IntelliViews.API.Helpers;
@@ -18,105 +19,18 @@ namespace IntelliViews.API.Endpoints
         {
             var threadsGroup = app.MapGroup("threads");
             threadsGroup.MapGet("/", GetAll);
-            threadsGroup.MapGet("/{user_id}", GetThreads);
-            threadsGroup.MapGet("/{user_id}/{thread_id}", GetThread);
-            threadsGroup.MapGet("/{user_id}/feedback/{thread_id}", GetFeedback);
+            //threadsGroup.MapPost("/{user_id}", AddThread);
+            //threadsGroup.MapPut("/{thread_id}", UpdateThread);
+            //threadsGroup.MapDelete("/{thread_id}", DeleteThread);
 
-            
-        }
-
-
-        
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public static async Task<IResult> GetThread(
-           [FromQuery] string userId,
-           [FromQuery] string threadId,
-           [FromServices] ThreadRepository repository,
-           [FromServices] IMapper mapper
-       )
-        {
-            ServiceResponse<OutThreadsDTO> response = new();
-            try
-            {
-                // Source: 
-                ThreadUser source = await repository.FindByUserIdAndThreadId(userId, threadId);
-                // Transferring:
-                response.Data = mapper.Map<OutThreadsDTO>(source);
-                response.Status = true;
-                return TypedResults.Ok(new { DateTime = DateTime.Now, response });
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
-            }
-
-        }
-
-        public async static Task<IResult> GetThreads
-            (
-                [FromRoute] string userId,
-                [FromServices] ThreadRepository repository,
-                [FromServices] IMapper mapper
-            ) {
-
-            ServiceResponse<List<OutThreadsDTO>> response = new();
-            try
-            {
-                // Source: 
-                List<ThreadUser> source = await repository.GetById(userId);
-                // Transferring:
-                List<OutThreadsDTO> results = source.Select(mapper.Map<OutThreadsDTO>).ToList();
-                response.Data = results;
-                response.Status = true;
-                return TypedResults.Ok(new { DateTime = DateTime.Now, response });
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
-            }
-
-        }
-
-
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async static Task<IResult> GetFeedback
-            (
-                [FromQuery] string threadId,
-                [FromQuery] string userId,
-                [FromServices] ThreadRepository repository,
-                [FromServices] IMapper mapper
-            )
-        {
-            ServiceResponse<List<OutFeedbackDTO>> response = new();
-            try
-            {
-                // Source: 
-                List<Feedback> source = await repository.FindFeedbacksByThreadIdAndUserId(threadId, userId);
-                // Transferring:
-                List<OutFeedbackDTO> results = source.Select(mapper.Map<OutFeedbackDTO>).ToList();
-                response.Data = results;
-                response.Status = true;
-                return TypedResults.Ok(new { DateTime = DateTime.Now, response });
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
-            }
+            //threadsGroup.MapPost("/feedback/{thread_id}", AddFeedback);
+            //threadsGroup.MapPut("/feedback/{thread_id}", UpdateFeedback);
+            //threadsGroup.MapDelete("/feedback/{thread_id}", DeleteFeedback);
 
 
         }
 
-
+         
 
         //[Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -138,6 +52,37 @@ namespace IntelliViews.API.Endpoints
 
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async static Task<IResult> AddThread
+            (
+                [FromBody] InThreadDTO newThread,
+                [FromServices] IRepository<ThreadUser> repository,
+                [FromServices] IMapper mapper
+            )
+        {
+            ServiceResponse<OutThreadsDTO> response = new();
+            try
+            {
+                ThreadUser thread = mapper.Map<ThreadUser>(newThread);
+                // Source: 
+                ThreadUser source = await repository.Create(thread);
+                // Transferring:
+                OutThreadsDTO result = mapper.Map<OutThreadsDTO>(source);
+                response.Data = result;
+                response.Status = true;
+                return TypedResults.Ok(new { DateTime = DateTime.Now, response });
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+
+        }
 
     }
 }
