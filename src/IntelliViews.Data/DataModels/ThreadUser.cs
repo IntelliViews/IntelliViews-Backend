@@ -18,14 +18,14 @@ namespace IntelliViews.Data.DataModels
 
 
         // For many to one:
-        [ForeignKey("user_id")]
-        [Column("user_id")]
+        [ForeignKey("userId")]
+        //[Column("user_id")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
 
         // Navigation property for feedback associated with this thread
-        public Feedback Feedback { get; set; } = null!;
+        public Feedback Feedback { get; set; }
         
 
     }

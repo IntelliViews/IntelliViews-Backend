@@ -43,11 +43,15 @@ namespace IntelliViews.Data
                 .Navigation(t => t.Feedbacks)
                 .AutoInclude();
 
-           // Relationship one-to - one between Thread and Feedback
-            builder.Entity<ThreadUser>()
-               .HasOne(t => t.Feedback)
-               .WithOne(f => f.Thread)
-               .HasForeignKey<ThreadUser>(t => t.Id);
+            builder.Entity<ApplicationUser>()
+                .Navigation(t => t.Threads)
+                .AutoInclude();
+
+            // Relationship one-to - one between Thread and Feedback
+            /* builder.Entity<ThreadUser>()
+                .HasOne(t => t.Feedback)
+                .WithOne(f => f.Thread)
+                .HasForeignKey<ThreadUser>(t => t.Id);*/
 
             /*   // Relationship one-to-many between User and Feedbacks
                builder.Entity<ApplicationUser>()
@@ -67,15 +71,15 @@ namespace IntelliViews.Data
 
             // Testing with seed:
             builder.Entity<ThreadUser>().HasData(
-                new ThreadUser() { Id = "1", Context = "Test1", CreatedAt = DateTime.Now, UserId = "466ddc96 - a3e7 - 4025 - 820a - 0fc14c650a4d" },
-                new ThreadUser() { Id = "2", Context = "Test2", CreatedAt = DateTime.Now, UserId = "bdad1ff0-cfb4-40fb-b69c-bd64aef0fc0a" },
-                new ThreadUser() { Id = "3", Context = "Test3", CreatedAt = DateTime.Now, UserId = "cfced002-b073-4227-a3a7-d1db45d58153" }
+                new ThreadUser() { Id = "1", Context = "Test111", CreatedAt = DateTime.Now, UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03" },
+                new ThreadUser() { Id = "2", Context = "Test222", CreatedAt = DateTime.Now, UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c" },
+                new ThreadUser() { Id = "3", Context = "Test333", CreatedAt = DateTime.Now, UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a" }
                 );
 
             builder.Entity<Feedback>().HasData(
-               new Feedback() { Id = "11", Context = "TestFeedback1", CreatedAt = DateTime.Now, ThreadId = "1", UserId = "466ddc96 - a3e7 - 4025 - 820a - 0fc14c650a4d" },
-               new Feedback() { Id = "22", Context = "TestFeedback2", CreatedAt = DateTime.Now, ThreadId = "2", UserId = "bdad1ff0-cfb4-40fb-b69c-bd64aef0fc0a" },
-               new Feedback() { Id = "22", Context = "TestFeedback3", CreatedAt = DateTime.Now, ThreadId = "3", UserId = "cfced002-b073-4227-a3a7-d1db45d58153" }
+               new Feedback() { Id = "1111", Context = "TestFeedback1", CreatedAt = DateTime.Now, ThreadId = "1", UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03", Score = 1 },
+               new Feedback() { Id = "2222", Context = "TestFeedback2", CreatedAt = DateTime.Now, ThreadId = "2", UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c", Score = 10 },
+               new Feedback() { Id = "3333", Context = "TestFeedback3", CreatedAt = DateTime.Now, ThreadId = "3", UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a", Score = 9 }
                );
 
         }

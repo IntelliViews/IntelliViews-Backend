@@ -18,24 +18,25 @@ namespace IntelliViews.API.Endpoints
         public static void ThreadsConfiguration(this WebApplication app) 
         {
             var threadsGroup = app.MapGroup("threads");
-            threadsGroup.MapGet("/", GetAll);
-            //threadsGroup.MapPost("/{user_id}", AddThread);
-            //threadsGroup.MapPut("/{thread_id}", UpdateThread);
-            //threadsGroup.MapDelete("/{thread_id}", DeleteThread);
+            threadsGroup.MapGet("/", GetAllThreads);
+            threadsGroup.MapPost("/", AddThread);
+            threadsGroup.MapPut("/{id}", UpdateThread);
+            threadsGroup.MapDelete("/{id}", DeleteThread);
 
-            //threadsGroup.MapPost("/feedback/{thread_id}", AddFeedback);
-            //threadsGroup.MapPut("/feedback/{thread_id}", UpdateFeedback);
-            //threadsGroup.MapDelete("/feedback/{thread_id}", DeleteFeedback);
+            threadsGroup.MapGet("/feedback", GetAllFeedbacks);
+            threadsGroup.MapPost("/feedback/{id}", AddFeedback);
+            threadsGroup.MapPut("/feedback/{id}", UpdateFeedback);
+            threadsGroup.MapDelete("/feedback/{id}", DeleteFeedback);
 
 
         }
 
          
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public static async Task<IResult> GetAll(
+        public static async Task<IResult> GetAllThreads(
             [FromServices] ThreadRepository repository,
             [FromServices] IMapper mapper
             )
@@ -48,12 +49,14 @@ namespace IntelliViews.API.Endpoints
             List<OutThreadsDTO> results = source.Select(mapper.Map<OutThreadsDTO>).ToList();
             response.Data = results;
             response.Status = true;
-            return TypedResults.Ok(new { DateTime = DateTime.Now, response });
+            response.Message = "Successful!";
+            return TypedResults.Ok( response ); //return TypedResults.Ok(new { DateTime = DateTime.Now, response });
 
         }
 
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async static Task<IResult> AddThread
             (
@@ -62,6 +65,7 @@ namespace IntelliViews.API.Endpoints
                 [FromServices] IMapper mapper
             )
         {
+           
             ServiceResponse<OutThreadsDTO> response = new();
             try
             {
@@ -72,7 +76,7 @@ namespace IntelliViews.API.Endpoints
                 OutThreadsDTO result = mapper.Map<OutThreadsDTO>(source);
                 response.Data = result;
                 response.Status = true;
-                return TypedResults.Ok(new { DateTime = DateTime.Now, response });
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
@@ -82,6 +86,192 @@ namespace IntelliViews.API.Endpoints
             }
 
 
+        }
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdateThread(
+            [FromServices] IRepository<ThreadUser> repository,
+            [FromServices] IMapper mapper,
+            [FromBody] InThreadDTO newThread,
+            [FromQuery] string id
+            )
+        {
+            ServiceResponse<OutThreadsDTO> response = new();
+            try
+            {
+                ThreadUser thread = mapper.Map<ThreadUser>(newThread);
+                thread.Id = id;
+                // source: 
+                var source = await repository.Update(thread, id);
+                //Transferring:
+                response.Data = mapper.Map<OutThreadsDTO>(source);
+                response.Status = true;
+
+                return response != null ? TypedResults.Ok(response) :
+                    TypedResults.BadRequest($"Couldn't save to the database");
+            }
+
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public static async Task<IResult> DeleteThread(
+            [FromServices] IRepository<ThreadUser> repository,
+            [FromServices] IMapper mapper,
+            [FromQuery] string id)
+        {
+
+            ServiceResponse<OutThreadsDTO> response = new();
+
+            try
+            {
+                // source: 
+                var source = await repository.DeleteById(id);
+                //Transferring:
+                response.Data = mapper.Map<OutThreadsDTO>(source);
+                response.Status = true;
+
+                return response != null ? TypedResults.Ok(response) :
+                    TypedResults.BadRequest($"Couldn't delete from the database");
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public static async Task<IResult> GetAllFeedbacks(
+            [FromServices] IRepository<Feedback> repository,
+            [FromServices] IMapper mapper
+            )
+        {
+            ServiceResponse<List<OutFeedbackDTO>> response = new();
+
+            // Source: 
+            List<Feedback> source = await repository.GetAll();
+            // Transferring:
+            List<OutFeedbackDTO> results = source.Select(mapper.Map<OutFeedbackDTO>).ToList();
+            response.Data = results;
+            response.Status = true;
+            return TypedResults.Ok(response); 
+        }
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async static Task<IResult> AddFeedback
+           (
+               [FromBody] InFeedbackDTO newFeedback,
+               [FromServices] IRepository<Feedback> repository,
+               [FromServices] IMapper mapper
+           )
+        {
+            
+            ServiceResponse<OutFeedbackDTO> response = new();
+            try
+            {
+                Feedback feedback = mapper.Map<Feedback>(newFeedback);
+                // Source: 
+                Feedback source = await repository.Create(feedback);
+                // Transferring:
+                OutFeedbackDTO result = mapper.Map<OutFeedbackDTO>(source);
+                response.Data = result;
+                response.Status = true;
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdateFeedback(
+            [FromServices] IRepository<Feedback> repository,
+            [FromServices] IMapper mapper,
+            [FromBody] InFeedbackDTO newFeedback,
+            [FromQuery] string id
+            )
+        {
+            ServiceResponse<OutFeedbackDTO> response = new();
+            try
+            {
+                Feedback feedback = mapper.Map<Feedback>(newFeedback);
+                feedback.Id = id;
+                // source: 
+                var source = await repository.Update(feedback, id);
+                //Transferring:
+                response.Data = mapper.Map<OutFeedbackDTO>(source);
+                response.Status = true;
+
+                return response != null ? TypedResults.Ok(response) :
+                    TypedResults.BadRequest($"Couldn't save to the database");
+            }
+
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public static async Task<IResult> DeleteFeedback(
+            [FromServices] IRepository<Feedback> repository,
+            [FromServices] IMapper mapper,
+            [FromQuery] string id)
+        {
+
+            ServiceResponse<OutFeedbackDTO> response = new();
+
+            try
+            {
+                // source: 
+                var source = await repository.DeleteById(id);
+                //Transferring:
+                response.Data = mapper.Map<OutFeedbackDTO>(source);
+                response.Status = true;
+
+                return response != null ? TypedResults.Ok(response) :
+                    TypedResults.BadRequest($"Couldn't delete from the database");
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(ex.Message);
+            }
         }
 
     }

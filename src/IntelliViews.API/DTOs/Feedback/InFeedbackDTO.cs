@@ -3,9 +3,10 @@
     public class InFeedbackDTO
     {
         public required string UserId { get; set; }
-        public required string FeedBackId { get; set; }
-        public DateTime? Created { get; set; } = DateTime.Now;
+        public required string ThreadId { get; set; }
+        
         public string? Context { get; set; }
         public int? Score { get; set; }
     }
 }
+

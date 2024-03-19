@@ -43,6 +43,7 @@ namespace IntelliViews.Repository
             return entity;
         }
 
+        // Have not taken an account for empty or bad request..
         public async Task<T> Update(T entity, string id)
         {
             T source = await GetById(id);

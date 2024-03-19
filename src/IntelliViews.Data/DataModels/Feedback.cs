@@ -22,16 +22,18 @@ namespace IntelliViews.Data.DataModels
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("content")]
         public string? Context { get; set; }
+        [Column("score")]
+        public int Score { get; set; }
 
         // Foreign key to relate feedback to user via thread
-        [ForeignKey("thread.user_id")]
-        [Column("user_id")]
+        [ForeignKey("UserId")]
+        //[Column("user_id")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         // Foreign key to relate feedback to thread
-        [ForeignKey("thread_id")]
-        [Column("thread_id")]
+        [ForeignKey("ThreadId")]
+        //[Column("thread_id")]
         public string ThreadId { get; set; }
         public ThreadUser Thread { get; set; }
 

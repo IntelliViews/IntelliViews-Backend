@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace IntelliViews.API.Endpoints
 {
-    public static class UserEnpoint
+    public static class UserEndpoint
     {
 
         public static void AuthenticationConfiguration(this WebApplication app)
@@ -29,8 +29,8 @@ namespace IntelliViews.API.Endpoints
             userGroup.MapDelete("/{id}", DeleteUser);
 
             userGroup.MapGet("/{id}/feedback/{feedback_id}", GetFeedback);
-            userGroup.MapGet("/{id}/thread", GetThreads);
-            userGroup.MapGet("/{id}/treadh/{thread_id}", GetThread);
+            userGroup.MapGet("/{id}/threads", GetThreads);
+            userGroup.MapGet("/{id}/threads/{thread_id}", GetThread);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -250,8 +250,7 @@ namespace IntelliViews.API.Endpoints
             }
         }
 
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "User")]
+        
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -22,14 +22,26 @@ namespace IntelliViews.Repository
 
         public async Task<ThreadUser> FindByUserIdAndThreadId(string userId, string threadId)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == threadId);
+            ThreadUser result = await _dbSet.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == threadId);
+            if (result == null)
+            {
+                throw new Exception($"Not found!");
+            }
+            return result;
         }
 
         public async Task<List<Feedback>> FindFeedbacksByIdAndUserId(string feedbackId, string userId)
         {
-            return await _dbContext.Feedbacks
+            List<Feedback> result = await _dbContext.Feedbacks
                 .Where(f => f.Id == feedbackId && f.UserId == userId)
                 .ToListAsync();
+
+            if (result.Count == 0 )
+            {
+                throw new Exception($"Not found!");
+            }
+            return result;
+
         }
 
         public async Task<List<ThreadUser>> GetAll()
@@ -47,7 +59,7 @@ namespace IntelliViews.Repository
         public async Task<List<ThreadUser>> GetById(string userId)
         {
             // Check if any threads exist for the specified userId
-            bool userExists = await _dbContext.Threads.AnyAsync(t => t.Id == userId);
+            bool userExists = await _dbContext.Threads.AnyAsync(t => t.UserId == userId);
             if (!userExists)
             {
                 throw new Exception($"User with ID '{userId}' does not exist or no thread existed!");
@@ -59,3 +71,4 @@ namespace IntelliViews.Repository
         }
     }
 }
+
