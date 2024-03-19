@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IntelliViews.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240319165148_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240319212112_SecondMigration")]
+    partial class SecondMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,6 +134,35 @@ namespace IntelliViews.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("feedbacks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1111",
+                            Context = "TestFeedback1",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(1072),
+                            Score = 1,
+                            ThreadId = "1",
+                            UserId = "0f058217-784c-4483-ad7d-9d4e01a81933"
+                        },
+                        new
+                        {
+                            Id = "2222",
+                            Context = "TestFeedback2",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(1084),
+                            Score = 10,
+                            ThreadId = "2",
+                            UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a"
+                        },
+                        new
+                        {
+                            Id = "3333",
+                            Context = "TestFeedback3",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(1090),
+                            Score = 9,
+                            ThreadId = "3",
+                            UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a"
+                        });
                 });
 
             modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
@@ -141,23 +170,40 @@ namespace IntelliViews.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("Context")
-                        .HasColumnType("text")
-                        .HasColumnName("content");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("Date")
                         .HasColumnName("created_at");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("threads");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(808),
+                            UserId = "0f058217-784c-4483-ad7d-9d4e01a81933"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(816),
+                            UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            CreatedAt = new DateTime(2024, 3, 19, 22, 21, 12, 85, DateTimeKind.Local).AddTicks(822),
+                            UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

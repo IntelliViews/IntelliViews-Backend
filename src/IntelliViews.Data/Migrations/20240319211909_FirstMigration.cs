@@ -107,15 +107,14 @@ namespace IntelliViews.Data.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "Date", nullable: false),
-                    content = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    content = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_threads", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_threads_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_threads_AspNetUsers_content",
+                        column: x => x.content,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -182,9 +181,9 @@ namespace IntelliViews.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_threads_UserId",
+                name: "IX_threads_content",
                 table: "threads",
-                column: "UserId");
+                column: "content");
         }
 
         /// <inheritdoc />
