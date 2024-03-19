@@ -27,13 +27,11 @@ namespace IntelliViews.Data.DataModels
 
         // Foreign key to relate feedback to user via thread
         [ForeignKey("UserId")]
-        //[Column("user_id")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         // Foreign key to relate feedback to thread
         [ForeignKey("ThreadId")]
-        //[Column("thread_id")]
         public string ThreadId { get; set; }
         public ThreadUser Thread { get; set; }
 

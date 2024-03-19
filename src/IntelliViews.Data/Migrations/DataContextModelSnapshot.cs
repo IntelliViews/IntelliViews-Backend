@@ -137,40 +137,35 @@ namespace IntelliViews.Data.Migrations
                         {
                             Id = "1111",
                             Context = "TestFeedback1",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2474),
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4787),
                             Score = 1,
                             ThreadId = "1",
-                            UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03"
+                            UserId = "0f058217-784c-4483-ad7d-9d4e01a81933"
                         },
                         new
                         {
                             Id = "2222",
                             Context = "TestFeedback2",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2481),
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4797),
                             Score = 10,
                             ThreadId = "2",
-                            UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c"
+                            UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a"
                         },
                         new
                         {
                             Id = "3333",
                             Context = "TestFeedback3",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2485),
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4803),
                             Score = 9,
                             ThreadId = "3",
-                            UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a"
+                            UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a"
                         });
                 });
 
             modelBuilder.Entity("IntelliViews.Data.DataModels.ThreadUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
-
-                    b.Property<string>("Context")
-                        .HasColumnType("text")
-                        .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("Date")
@@ -178,7 +173,8 @@ namespace IntelliViews.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content");
 
                     b.HasKey("Id");
 
@@ -190,23 +186,20 @@ namespace IntelliViews.Data.Migrations
                         new
                         {
                             Id = "1",
-                            Context = "Test111",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2341),
-                            UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03"
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4480),
+                            UserId = "0f058217-784c-4483-ad7d-9d4e01a81933"
                         },
                         new
                         {
                             Id = "2",
-                            Context = "Test222",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2346),
-                            UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c"
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4488),
+                            UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a"
                         },
                         new
                         {
                             Id = "3",
-                            Context = "Test333",
-                            CreatedAt = new DateTime(2024, 3, 19, 15, 16, 56, 767, DateTimeKind.Local).AddTicks(2350),
-                            UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a"
+                            CreatedAt = new DateTime(2024, 3, 19, 18, 7, 18, 348, DateTimeKind.Local).AddTicks(4493),
+                            UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a"
                         });
                 });
 

@@ -1,0 +1,27 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@host = https://localhost:7029
+@token1= 
+@adminbearer = {{token1}}
+
+### POST Register an Admin
+POST {{host}}/api/users/register
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+{
+  "email": "Kanthee1@Hotmail.com",
+  "userName": "Keyyy1",
+  "password": "qwerty",
+  "role": "Admin"
+}
+
+### POST Login  Admin User
+POST {{host}}/api/users/login
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+{
+  "email": "Kanthee1@Hotmail.com",
+  "password": "qwerty"
+}

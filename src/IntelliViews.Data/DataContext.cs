@@ -71,15 +71,15 @@ namespace IntelliViews.Data
 
             // Testing with seed:
             builder.Entity<ThreadUser>().HasData(
-                new ThreadUser() { Id = "1", Context = "Test111", CreatedAt = DateTime.Now, UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03" },
-                new ThreadUser() { Id = "2", Context = "Test222", CreatedAt = DateTime.Now, UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c" },
-                new ThreadUser() { Id = "3", Context = "Test333", CreatedAt = DateTime.Now, UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a" }
+                new ThreadUser() { Id = "1", CreatedAt = DateTime.Now, UserId = "0f058217-784c-4483-ad7d-9d4e01a81933" },
+                new ThreadUser() { Id = "2", CreatedAt = DateTime.Now, UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a" },
+                new ThreadUser() { Id = "3", CreatedAt = DateTime.Now, UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a" }
                 );
 
             builder.Entity<Feedback>().HasData(
-               new Feedback() { Id = "1111", Context = "TestFeedback1", CreatedAt = DateTime.Now, ThreadId = "1", UserId = "88adc46e-ba2d-4941-9175-e9e041a61d03", Score = 1 },
-               new Feedback() { Id = "2222", Context = "TestFeedback2", CreatedAt = DateTime.Now, ThreadId = "2", UserId = "c4505e94-21ac-47ae-84db-722ce907ad3c", Score = 10 },
-               new Feedback() { Id = "3333", Context = "TestFeedback3", CreatedAt = DateTime.Now, ThreadId = "3", UserId = "f245ef4c-683c-4f95-aa3e-dd6202109f0a", Score = 9 }
+               new Feedback() { Id = "1111", Context = "TestFeedback1", CreatedAt = DateTime.Now, ThreadId = "1", UserId = "0f058217-784c-4483-ad7d-9d4e01a81933", Score = 1 },
+               new Feedback() { Id = "2222", Context = "TestFeedback2", CreatedAt = DateTime.Now, ThreadId = "2", UserId = "2450d037-6235-498c-b1e7-ceaf8cafb53a", Score = 10 },
+               new Feedback() { Id = "3333", Context = "TestFeedback3", CreatedAt = DateTime.Now, ThreadId = "3", UserId = "cdf987f1-81df-4de6-93eb-6182e8f4031a", Score = 9 }
                );
 
         }

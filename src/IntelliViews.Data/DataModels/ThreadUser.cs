@@ -8,18 +8,15 @@ namespace IntelliViews.Data.DataModels
     public class ThreadUser : DbEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("content")]
-        public string? Context { get; set; }
-
+       
 
         // For many to one:
         [ForeignKey("userId")]
-        //[Column("user_id")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 

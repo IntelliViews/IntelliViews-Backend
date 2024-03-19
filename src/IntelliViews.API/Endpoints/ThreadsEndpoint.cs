@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using IntelliViews.API.DTOs.Feedback;
 using IntelliViews.API.DTOs.Threads;
-using IntelliViews.API.DTOs.User;
-using IntelliViews.API.Helpers;
 using IntelliViews.API.Services;
 using IntelliViews.Data.DataModels;
 using IntelliViews.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Threading;
+
 
 namespace IntelliViews.API.Endpoints
 {
