@@ -12,7 +12,7 @@ namespace IntelliViews.API.Endpoints
 {
     public static class ThreadsEndpoint
     {
-        public static void ThreadsConfiguration(this WebApplication app) 
+        public static void ThreadsConfiguration(this WebApplication app)
         {
             var threadsGroup = app.MapGroup("threads");
             threadsGroup.MapGet("/", GetAllThreads);
@@ -28,8 +28,6 @@ namespace IntelliViews.API.Endpoints
 
         }
 
-         
-
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -39,16 +37,20 @@ namespace IntelliViews.API.Endpoints
             )
         {
             ServiceResponse<List<OutThreadsDTO>> response = new();
-
-            // Source: 
-            List<ThreadUser> source = await repository.GetAll();
-            // Transferring:
-            List<OutThreadsDTO> results = source.Select(mapper.Map<OutThreadsDTO>).ToList();
-            response.Data = results;
-            response.Status = true;
-            response.Message = "Successful!";
-            return TypedResults.Ok( response ); //return TypedResults.Ok(new { DateTime = DateTime.Now, response });
-
+            try
+            {
+                List<ThreadUser> source = await repository.GetAll();
+                List<OutThreadsDTO> results = source.Select(mapper.Map<OutThreadsDTO>).ToList();
+                response.Data = results;
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Data = null;
+                response.Status = false;
+                return TypedResults.BadRequest(response);
+            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -62,7 +64,7 @@ namespace IntelliViews.API.Endpoints
                 [FromServices] IMapper mapper
             )
         {
-           
+
             ServiceResponse<OutThreadsDTO> response = new();
             try
             {
@@ -168,7 +170,7 @@ namespace IntelliViews.API.Endpoints
             List<OutFeedbackDTO> results = source.Select(mapper.Map<OutFeedbackDTO>).ToList();
             response.Data = results;
             response.Status = true;
-            return TypedResults.Ok(response); 
+            return TypedResults.Ok(response);
         }
 
         [Authorize(Roles = "Admin")]
@@ -182,7 +184,7 @@ namespace IntelliViews.API.Endpoints
                [FromServices] IMapper mapper
            )
         {
-            
+
             ServiceResponse<OutFeedbackDTO> response = new();
             try
             {
