@@ -42,12 +42,16 @@ if (!app.Environment.IsDevelopment())
     connectionString = "ProductionConnection";
 }*/
 
+string connString = "";
+#if DEBUG
+connString = "DevelopmentConnection";
+#else
+connString = "ProductionConnection";
+#endif
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
-    //opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("ProductionConnection"));
-    //opt.UseNpgsql(builder.Configuration.GetConnectionString(connectionString));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString(connString));
 });
 
 // Add Database repo:
