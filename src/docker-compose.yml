@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  intelliviews.api:
+    container_name: api
+    image: ${DOCKER_REGISTRY-}intelliviewsapi
+    build:
+      context: .
+      dockerfile: IntelliViews.API/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+        ConnectionStrings__ProductionConnection: "Host=db;Database=api;Username=api;Password=api"
+    depends_on:
+      - db
+    networks:
+      - api-network
+
+  db:
+    container_name: db
+    image: postgres
+    ports:
+      - "6543:5432"
+    environment:
+      POSTGRES_PASSWORD: api
+      POSTGRES_USER: api
+      POSTGRES_DB: api
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - api-network
+
+networks:
+  api-network:
+    driver: bridge
+
+volumes:
+  pgdata: {}

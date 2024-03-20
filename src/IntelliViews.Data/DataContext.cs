@@ -14,11 +14,12 @@ namespace IntelliViews.Data
        
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-           
+            Database.Migrate();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.LogTo(message => Debug.WriteLine(message)); //see the sql EF using in the console
+            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

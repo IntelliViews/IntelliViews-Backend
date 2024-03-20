@@ -42,12 +42,9 @@ if (!app.Environment.IsDevelopment())
     connectionString = "ProductionConnection";
 }*/
 
-string connString = "";
-#if DEBUG
-connString = "DevelopmentConnection";
-#else
-connString = "ProductionConnection";
-#endif
+string connString = "ProductionConnection";
+
+System.Console.WriteLine(connString);
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
