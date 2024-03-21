@@ -1,0 +1,47 @@
+
+version: '3.4'
+
+services:
+  IntelliViews.API:
+    image: ${DOCKER_REGISTRY-}intelliviewsapi
+    container_name: 'Intelliview.API1'
+    build:
+      context: .
+      dockerfile: IntelliViews.API/Dockerfile
+    ports:
+      - "8000:8000"
+      - "8001:8001" 
+    networks:
+    - kanthee-network
+    depends_on:
+      project.database:
+        condition: service_healthy
+  project.database:
+    container_name: 'Intelliview.API1'
+    image: postgres:latest
+    environment: 
+       # - =postgres
+       # - POSTGRES_USER=postgres
+       # - POSTGRES_PASSWORD=postgres      ????????
+       - POSTGRES_DB=postgres
+       - POSTGRES_USER=postgres
+       - POSTGRES_PASSWORD=postgres
+    volumes:
+        - './.containers/project-db:/var/lib/postgresql/data'          #Persis our database, and store the database. Whenever we run the container -> we will store this in the local aswell.
+    ports:
+        - 5432:5432
+    networks:
+    - kanthee-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  kanthee-network:
+    driver: bridge
