@@ -62,9 +62,6 @@ builder.Services.AddScoped<AuthenticationRepository>();
 //builder.Services.AddScoped<IRepository<ThreadUser>, ThreadRepository>();
 builder.Services.AddScoped<ThreadRepository>();
 
-
-
-
 builder.Services.AddSwaggerGen(option =>
 {
     // THIS ADD Token Scheme in Swagger:
@@ -154,7 +151,6 @@ builder.Services.AddAuthentication(options =>
     });
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -169,6 +165,11 @@ app.UseStatusCodePages();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:5173", "https://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+});
 
 //Endpoints:
 app.AuthenticationConfiguration();
