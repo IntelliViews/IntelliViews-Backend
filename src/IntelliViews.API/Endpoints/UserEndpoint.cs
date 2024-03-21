@@ -112,7 +112,8 @@ namespace IntelliViews.API.Endpoints
                     await repository.LoginUser();
                     // Transferring:
                     response.Data = new OutAuthDTO
-                    {
+                    {   
+                        Id = dbUser.Id,
                         Username = dbUser.UserName,
                         Email = dbUser.Email,
                         Token = token
