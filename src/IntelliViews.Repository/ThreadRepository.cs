@@ -1,12 +1,6 @@
-﻿using IntelliViews.Data.DataModels;
-using IntelliViews.Data;
+﻿using IntelliViews.Data;
+using IntelliViews.Data.DataModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntelliViews.Repository;
 
 namespace IntelliViews.Repository
 {
@@ -14,7 +8,7 @@ namespace IntelliViews.Repository
     {
         private readonly DataContext _dbContext;
         private DbSet<ThreadUser> _dbSet = null;
-        public ThreadRepository(DataContext dbContext) : base(dbContext) 
+        public ThreadRepository(DataContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<ThreadUser>();
@@ -36,7 +30,7 @@ namespace IntelliViews.Repository
                 .Where(f => f.Id == feedbackId && f.UserId == userId)
                 .ToListAsync();
 
-            if (result.Count == 0 )
+            if (result.Count == 0)
             {
                 throw new Exception($"Not found!");
             }
@@ -47,7 +41,8 @@ namespace IntelliViews.Repository
         public async Task<List<ThreadUser>> GetAll()
         {
             List<ThreadUser> entities = await _dbSet.ToListAsync();
-            if (entities == null || entities.Count == 0) {
+            if (entities == null || entities.Count == 0)
+            {
                 throw new Exception("Not Found!");
             }
             else
@@ -58,16 +53,7 @@ namespace IntelliViews.Repository
 
         public async Task<List<ThreadUser>> GetById(string userId)
         {
-            // Check if any threads exist for the specified userId
-            bool userExists = await _dbContext.Threads.AnyAsync(t => t.UserId == userId);
-            if (!userExists)
-            {
-                throw new Exception($"User with ID '{userId}' does not exist or no thread existed!");
-            }
-            else { return await _dbContext.Threads
-            .Where(t => t.UserId == userId)
-            .ToListAsync();
-            }
+            return await _dbContext.Threads.Where(t => t.UserId == userId).ToListAsync();
         }
     }
 }

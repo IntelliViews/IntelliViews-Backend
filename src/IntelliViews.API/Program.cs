@@ -30,18 +30,6 @@ builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddProblemDetails();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-
-/*// For switching between two production and development connection.
-string connectionString = "DevelopmentConnection";
-IWebHostEnvironment env;
-#if HTTP
-#endif
-// For production environment, use the production connection string
-if (!app.Environment.IsDevelopment())
-{
-    connectionString = "ProductionConnection";
-}*/
-
 string connString = "";
 #if DEBUG
 connString = "DevelopmentConnection";
@@ -168,7 +156,7 @@ app.UseAuthorization();
 
 app.UseCors(options =>
 {
-    options.WithOrigins("http://localhost:5173", "https://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+    options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 });
 
 //Endpoints:

@@ -6,6 +6,7 @@ using IntelliViews.Data.DataModels;
 using IntelliViews.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace IntelliViews.API.Endpoints
@@ -28,7 +29,8 @@ namespace IntelliViews.API.Endpoints
 
         }
 
-        [Authorize(Roles = "Admin")]
+        private static string GetUserId(ClaimsPrincipal principal) => principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> GetAllThreads(
@@ -53,13 +55,13 @@ namespace IntelliViews.API.Endpoints
             }
         }
 
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async static Task<IResult> AddThread
             (
                 [FromBody] InThreadDTO newThread,
+                ClaimsPrincipal claimsPrincipal,
                 [FromServices] IRepository<ThreadUser> repository,
                 [FromServices] IMapper mapper
             )
@@ -68,10 +70,12 @@ namespace IntelliViews.API.Endpoints
             ServiceResponse<OutThreadsDTO> response = new();
             try
             {
-                ThreadUser thread = mapper.Map<ThreadUser>(newThread);
-                // Source: 
+                ThreadUser thread = new()
+                {
+                    UserId = GetUserId(claimsPrincipal),
+                    Id = newThread.Id
+                };
                 ThreadUser source = await repository.Create(thread);
-                // Transferring:
                 OutThreadsDTO result = mapper.Map<OutThreadsDTO>(source);
                 response.Data = result;
                 response.Status = true;
@@ -81,13 +85,10 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
-
-
         }
 
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -117,12 +118,11 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
 
         }
 
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -149,7 +149,7 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
         }
 
@@ -201,7 +201,7 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
 
 
@@ -237,7 +237,7 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
 
         }
@@ -269,7 +269,7 @@ namespace IntelliViews.API.Endpoints
             {
                 response.Status = false;
                 response.Message = ex.Message;
-                return TypedResults.NotFound(ex.Message);
+                return TypedResults.NotFound(response);
             }
         }
 
