@@ -134,7 +134,7 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> Get(
-            [FromQuery] string id,
+            [FromRoute] string id,
             [FromServices] IRepository<ApplicationUser> repository,
             [FromServices] IMapper mapper
         )
@@ -189,7 +189,7 @@ namespace IntelliViews.API.Endpoints
             [FromServices] IRepository<ApplicationUser> repository,
             [FromServices] IMapper mapper,
             [FromBody] InUserDTO newUser,
-            [FromQuery] string id
+            [FromRoute] string id
             )
         {
             ServiceResponse<OutUserDTO> response = new();
@@ -224,7 +224,7 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> DeleteUser(
             [FromServices] IRepository<ApplicationUser> repository,
             [FromServices] IMapper mapper,
-            [FromQuery] string id)
+            [FromRoute] string id)
         {
 
             ServiceResponse<OutUserDTO> response = new();
@@ -255,8 +255,8 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> GetThread(
-        [FromQuery] string id,
-        [FromQuery] string thread_id,
+        [FromRoute] string id,
+        [FromRoute] string thread_id,
           [FromServices] ThreadRepository repository,
           [FromServices] IMapper mapper
       )
@@ -287,7 +287,7 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async static Task<IResult> GetThreads
             (
-                [FromQuery] string id,
+                [FromRoute] string id,
                 [FromServices] ThreadRepository repository,
                 [FromServices] IMapper mapper
             )
@@ -321,8 +321,8 @@ namespace IntelliViews.API.Endpoints
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async static Task<IResult> GetFeedback
             (
-                [FromQuery] string id,
-                [FromQuery] string feedback_id,
+                [FromRoute] string id,
+                [FromRoute] string feedback_id,
                 [FromServices] ThreadRepository repository,
                 [FromServices] IMapper mapper
             )

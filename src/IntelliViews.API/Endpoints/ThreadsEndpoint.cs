@@ -95,7 +95,7 @@ namespace IntelliViews.API.Endpoints
             [FromServices] IRepository<ThreadUser> repository,
             [FromServices] IMapper mapper,
             [FromBody] InThreadDTO newThread,
-            [FromQuery] string id
+            [FromRoute] string id
             )
         {
             ServiceResponse<OutThreadsDTO> response = new();
@@ -129,7 +129,7 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> DeleteThread(
             [FromServices] IRepository<ThreadUser> repository,
             [FromServices] IMapper mapper,
-            [FromQuery] string id)
+            [FromRoute] string id)
         {
 
             ServiceResponse<OutThreadsDTO> response = new();
@@ -215,7 +215,7 @@ namespace IntelliViews.API.Endpoints
             [FromServices] IRepository<Feedback> repository,
             [FromServices] IMapper mapper,
             [FromBody] InFeedbackDTO newFeedback,
-            [FromQuery] string id
+            [FromRoute] string id
             )
         {
             ServiceResponse<OutFeedbackDTO> response = new();
@@ -249,7 +249,7 @@ namespace IntelliViews.API.Endpoints
         public static async Task<IResult> DeleteFeedback(
             [FromServices] IRepository<Feedback> repository,
             [FromServices] IMapper mapper,
-            [FromQuery] string id)
+            [FromRoute] string id)
         {
 
             ServiceResponse<OutFeedbackDTO> response = new();
