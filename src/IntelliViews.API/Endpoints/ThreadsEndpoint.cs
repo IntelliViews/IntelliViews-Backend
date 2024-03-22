@@ -22,7 +22,7 @@ namespace IntelliViews.API.Endpoints
             threadsGroup.MapDelete("/{id}", DeleteThread);
 
             threadsGroup.MapGet("/feedback", GetAllFeedbacks);
-            threadsGroup.MapPost("/feedback/{id}", AddFeedback);
+            threadsGroup.MapPost("/feedback", AddFeedback);
             threadsGroup.MapPut("/feedback/{id}", UpdateFeedback);
             threadsGroup.MapDelete("/feedback/{id}", DeleteFeedback);
 
